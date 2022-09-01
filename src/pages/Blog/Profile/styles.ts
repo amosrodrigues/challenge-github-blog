@@ -40,6 +40,7 @@ export const ProfileBio = styled.div`
   h2 {
     font-weight: 700;
     font-size: 1.5rem;
+    color: ${(props) => props.theme.title};
   }
 `
 
@@ -56,6 +57,10 @@ export const ProfileInfoItem = styled.div`
 
   span {
     color: ${(props) => props.theme.subtitle};
+  }
+
+  svg {
+    color: ${(props) => props.theme.label};
   }
 `
 

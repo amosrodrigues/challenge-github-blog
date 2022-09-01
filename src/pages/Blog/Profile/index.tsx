@@ -45,15 +45,13 @@ export function Profile() {
           </ProfileInfoItem>
         </ProfileInfo>
 
-        <ProfileGitHubLink>
-          <a
-            href="https://github.com/amosrodrigues"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>github</span>
-            <FontAwesomeIcon icon={faArrowUpRightFromSquare} fontSize={12} />
-          </a>
+        <ProfileGitHubLink
+          href="https://github.com/amosrodrigues"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span>github</span>
+          <FontAwesomeIcon icon={faArrowUpRightFromSquare} fontSize={12} />
         </ProfileGitHubLink>
       </ProfileContent>
     </ProfileContainer>

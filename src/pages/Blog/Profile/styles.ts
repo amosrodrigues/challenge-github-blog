@@ -64,23 +64,20 @@ export const ProfileInfoItem = styled.div`
   }
 `
 
-export const ProfileGitHubLink = styled.div`
+export const ProfileGitHubLink = styled.a`
   position: absolute;
   right: 0;
   top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: ${(props) => props.theme.blue};
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
 
-  a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    color: ${(props) => props.theme.blue};
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-
-    &:hover {
-      border-bottom: 1px solid ${(props) => props.theme.blue};
-    }
+  &:hover {
+    border-bottom: 1px solid ${(props) => props.theme.blue};
   }
 
   span {

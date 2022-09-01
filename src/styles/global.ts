@@ -42,7 +42,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.blue};
+    background-color: ${(props) => props.theme.border};
     border-radius: 3px;
     cursor: move;
   }

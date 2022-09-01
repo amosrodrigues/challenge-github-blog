@@ -9,18 +9,19 @@ export const GlobalStyle = createGlobalStyle`
   
   :focus {
     outline: 0;
-    box-shadow: 0 0 0 2px ${(props) => props.theme['yellow-dark']};
+    box-shadow: 0 0 0 2px ${(props) => props.theme.blue};
   }
 
   body {
     background: ${(props) => props.theme.background};
-    color: ${(props) => props.theme['base-text']};
+    color: ${(props) => props.theme.text};
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
   body, input, textarea, button {
-    font: 400 1rem  'Roboto', sans-serif;
+    font: 400 1rem  'Nunito', sans-serif;
+    line-height: 1.6;
   }
 
   ::-webkit-scrollbar {
@@ -41,7 +42,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.yellow};
+    background-color: ${(props) => props.theme.blue};
     border-radius: 3px;
     cursor: move;
   }

@@ -20,11 +20,7 @@ const searchFormSchema = z.object({
 type SearchFormInputs = z.infer<typeof searchFormSchema>
 
 export function Blog() {
-  const {
-    register,
-    watch,
-    formState: { isSubmitting },
-  } = useForm<SearchFormInputs>({
+  const { register, watch } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchFormSchema),
   })
 

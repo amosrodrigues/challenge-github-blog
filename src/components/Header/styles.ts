@@ -9,11 +9,9 @@ export const HeaderContainer = styled.header`
 
   background-image: url(${backgroundHeader});
   background-repeat: no-repeat;
-  background-size: 100vw;
+  background-size: cover;
   background-position: center;
 
-  height: 18.5rem;
-  width: 100vw;
+  width: 100%;
   padding: 4rem 0 8.375rem;
-  inset: 0;
 `

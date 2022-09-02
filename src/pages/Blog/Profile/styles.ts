@@ -10,6 +10,7 @@ export const ProfileContainer = styled.section`
 
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
 
   background: ${(props) => props.theme.profile};
@@ -84,5 +85,21 @@ export const ProfileGitHubLink = styled.a`
     font-weight: 700;
     font-size: 0.75rem;
     text-transform: uppercase;
+  }
+`
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+
+  p {
+    font-size: 1.25rem;
+  }
+
+  svg {
+    color: ${(props) => props.theme.label};
   }
 `

@@ -12,6 +12,10 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
+import { usePost } from '../../hooks/usePost'
+
+import { formatDistanceToNowStrict } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 
 const searchFormSchema = z.object({
   query: z.string(),
@@ -24,9 +28,11 @@ export function Blog() {
     resolver: zodResolver(searchFormSchema),
   })
 
+  const { posts } = usePost()
+
   const query = watch('query')
 
-  console.log(query)
+  console.log(posts)
 
   return (
     <BlogContainer>
@@ -46,61 +52,28 @@ export function Blog() {
       </SearchFormContainer>
 
       <PostListContainer>
-        <PostCard as={Link} to="/post" title="Ver detalhes do post">
-          <PostCardHeader>
-            <strong>JavaScript data types and data structures </strong>
-            <span>Há 1 dia</span>
-          </PostCardHeader>
+        {posts.map((post) => {
+          return (
+            <PostCard
+              as={Link}
+              key={post.number}
+              to={`/post/${post.number}`}
+              title={post.title}
+            >
+              <PostCardHeader>
+                <strong>{post.title}</strong>
+                <span>
+                  {formatDistanceToNowStrict(new Date(post.created_at), {
+                    addSuffix: true,
+                    locale: ptBR,
+                  })}
+                </span>
+              </PostCardHeader>
 
-          <PostCardDescription>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,
-            consequuntur quidem veritatis repellendus pariatur alias incidunt
-            unde ea dolore iste sunt a, rem deleniti praesentium, qui
-            consequatur. Nobis, magni adipisci?
-          </PostCardDescription>
-        </PostCard>
-
-        <PostCard>
-          <PostCardHeader>
-            <strong>JavaScript data types and data structures </strong>
-            <span>Há 1 dia</span>
-          </PostCardHeader>
-
-          <PostCardDescription>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,
-            consequuntur quidem veritatis repellendus pariatur alias incidunt
-            unde ea dolore iste sunt a, rem deleniti praesentium, qui
-            consequatur. Nobis, magni adipisci?
-          </PostCardDescription>
-        </PostCard>
-
-        <PostCard>
-          <PostCardHeader>
-            <strong>JavaScript data types and data structures </strong>
-            <span>Há 1 dia</span>
-          </PostCardHeader>
-
-          <PostCardDescription>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,
-            consequuntur quidem veritatis repellendus pariatur alias incidunt
-            unde ea dolore iste sunt a, rem deleniti praesentium, qui
-            consequatur. Nobis, magni adipisci?
-          </PostCardDescription>
-        </PostCard>
-
-        <PostCard>
-          <PostCardHeader>
-            <strong>JavaScript data types and data structures </strong>
-            <span>Há 1 dia</span>
-          </PostCardHeader>
-
-          <PostCardDescription>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus,
-            consequuntur quidem veritatis repellendus pariatur alias incidunt
-            unde ea dolore iste sunt a, rem deleniti praesentium, qui
-            consequatur. Nobis, magni adipisci?
-          </PostCardDescription>
-        </PostCard>
+              <PostCardDescription>{post.body}</PostCardDescription>
+            </PostCard>
+          )
+        })}
       </PostListContainer>
     </BlogContainer>
   )

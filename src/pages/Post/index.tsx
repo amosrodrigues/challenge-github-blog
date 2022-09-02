@@ -52,12 +52,12 @@ export function Post() {
 
             <PostInfoItem>
               <FontAwesomeIcon icon={faCalendarDay} fontSize={18} />
-              <span>Empresa</span>
+              <span>Há 1 dia</span>
             </PostInfoItem>
 
             <PostInfoItem>
               <FontAwesomeIcon icon={faComment} fontSize={18} />
-              <span>31 segguidores</span>
+              <span>5 comentários</span>
             </PostInfoItem>
           </div>
         </PostInfo>

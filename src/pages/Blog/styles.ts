@@ -101,6 +101,9 @@ export const PostCardHeader = styled.header`
   span {
     color: ${(props) => props.theme.span};
     font-size: 0.875rem;
+    ::first-letter {
+      text-transform: capitalize;
+    }
   }
 `
 

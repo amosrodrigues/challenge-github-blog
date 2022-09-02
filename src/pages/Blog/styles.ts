@@ -60,12 +60,13 @@ export const PostListContainer = styled.main`
   gap: 2rem;
 `
 
-export const PostCard = styled.div`
+const PostCardBAse = styled.div`
   text-decoration: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 1.25rem;
-  cursor: pointer;
 
   width: 416px;
   height: 260px;
@@ -74,10 +75,30 @@ export const PostCard = styled.div`
   background: ${(props) => props.theme.post};
   border-radius: 10px;
   border: 2px solid transparent;
+`
+
+export const PostCard = styled(PostCardBAse)`
+  cursor: pointer;
 
   &:hover {
     border: 2px solid ${(props) => props.theme.label};
     transition: border-color 0.5s;
+  }
+`
+
+export const PostCardNotFound = styled(PostCardBAse)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+
+  p {
+    font-size: 1.25rem;
+  }
+
+  svg {
+    color: ${(props) => props.theme.label};
   }
 `
 

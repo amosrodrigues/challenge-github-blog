@@ -1,21 +1,27 @@
+import { useCallback, useEffect } from 'react'
 import { Profile } from './Profile'
+import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { usePost } from '../../hooks/usePost'
+
+import { Loader } from '../../components/Loader'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlassChart } from '@fortawesome/free-solid-svg-icons'
+import { dateFormatter } from '../../utils/formatter'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+
 import {
   BlogContainer,
   PostCard,
   PostCardDescription,
   PostCardHeader,
+  PostCardNotFound,
   PostInfo,
   PostListContainer,
   SearchFormContainer,
 } from './styles'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from 'react-router-dom'
-import { usePost } from '../../hooks/usePost'
-
-import { formatDistanceToNowStrict } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
 
 const searchFormSchema = z.object({
   query: z.string(),
@@ -28,11 +34,19 @@ export function Blog() {
     resolver: zodResolver(searchFormSchema),
   })
 
-  const { posts } = usePost()
+  const { posts, request, fetchPostGitHub } = usePost()
 
-  const query = watch('query')
+  // const query = watch('query')
 
-  console.log(posts)
+  // const getPost = useCallback(async () => {
+  //   await fetchPostGitHub('amosrodrigues')
+  // }, [query])
+
+  // console.log(query)
+
+  // useEffect(() => {
+  //   getPost()
+  // }, [getPost])
 
   return (
     <BlogContainer>
@@ -52,28 +66,34 @@ export function Blog() {
       </SearchFormContainer>
 
       <PostListContainer>
-        {posts.map((post) => {
-          return (
-            <PostCard
-              as={Link}
-              key={post.number}
-              to={`/post/${post.number}`}
-              title={post.title}
-            >
-              <PostCardHeader>
-                <strong>{post.title}</strong>
-                <span>
-                  {formatDistanceToNowStrict(new Date(post.created_at), {
-                    addSuffix: true,
-                    locale: ptBR,
-                  })}
-                </span>
-              </PostCardHeader>
+        {request.isLoading ? (
+          <PostCard>
+            <Loader />
+          </PostCard>
+        ) : posts.length > 0 ? (
+          posts?.map((post) => {
+            return (
+              <PostCard
+                as={Link}
+                key={post.number}
+                to={`/post/${post.number}`}
+                title={post.title}
+              >
+                <PostCardHeader>
+                  <strong>{post.title}</strong>
+                  <span>{dateFormatter(post.created_at)}</span>
+                </PostCardHeader>
 
-              <PostCardDescription>{post.body}</PostCardDescription>
-            </PostCard>
-          )
-        })}
+                <PostCardDescription>{post.body}</PostCardDescription>
+              </PostCard>
+            )
+          })
+        ) : (
+          <PostCardNotFound>
+            <FontAwesomeIcon icon={faMagnifyingGlassChart} fontSize={48} />
+            <p>Ops! Post não localizado...</p>
+          </PostCardNotFound>
+        )}
       </PostListContainer>
     </BlogContainer>
   )

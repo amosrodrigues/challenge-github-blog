@@ -18,7 +18,7 @@ import {
   ProfileInfo,
   ProfileInfoItem,
 } from './styles'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { api } from '../../../services/api'
 import axios, { AxiosError } from 'axios'
 import { Loader } from '../../../components/Loader'
@@ -34,7 +34,7 @@ interface ProfileGitHub {
   location: string
 }
 
-export function Profile() {
+function ProfileBase() {
   const [profile, setProfile] = useState<ProfileGitHub>({} as ProfileGitHub)
   const [request, setRequest] = useState({ error: '', isLoading: false })
 
@@ -129,3 +129,5 @@ export function Profile() {
     </ProfileContainer>
   )
 }
+
+export const Profile = memo(ProfileBase)

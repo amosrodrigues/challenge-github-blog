@@ -30,7 +30,7 @@ export function PostProvider({ children }: PostProviderProps) {
       const queryString = encodeURIComponent(search ?? '')
       const response = await api.get<{ items: Post[] }>('search/issues', {
         params: {
-          q: `repo:amosrodrigues/challenge-github-blog is:issue ${queryString}`,
+          q: `repo:amosrodrigues/challenge-github-blog is:issue ${queryString} `,
         },
       })
 

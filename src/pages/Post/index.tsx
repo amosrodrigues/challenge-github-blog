@@ -8,8 +8,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import axios, { AxiosError } from 'axios'
+import { useCallback, useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { Loader } from '../../components/Loader'
+import { api } from '../../services/api'
+import { dateFormatter } from '../../utils/formatter'
 
 import {
   DescriptionMarkdown,
@@ -21,7 +26,61 @@ import {
   PostNav,
 } from './styles'
 
+interface PostData {
+  body: string
+  created_at: string
+  number: number
+  title: string
+  comments: number
+  html_url: string
+  user: {
+    login: string
+  }
+}
+
 export function Post() {
+  const [postInfo, setPostInfo] = useState<PostData>({} as PostData)
+  const [request, setRequest] = useState({ error: '', isLoading: false })
+
+  const { issueNumber } = useParams()
+
+  const fetchPostGitHub = useCallback(async () => {
+    try {
+      setRequest((state) => ({ ...state, isLoading: true }))
+      const url = `repos/amosrodrigues/challenge-github-blog/issues/${issueNumber}`
+      const response = await api.get<PostData>(url)
+
+      if (response.data) {
+        setPostInfo(response.data)
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const { response } = error as AxiosError
+        if (response) {
+          setRequest((state) => ({
+            ...state,
+            error: 'Ops! algo errado ao obter os dados do Github.',
+          }))
+          return
+        }
+      }
+    } finally {
+      setRequest((state) => ({ ...state, isLoading: false }))
+    }
+  }, [issueNumber])
+
+  useEffect(() => {
+    fetchPostGitHub()
+  }, [fetchPostGitHub])
+
+  if (request.isLoading && !!postInfo.title) {
+    return (
+      <PostContainer>
+        <Loader />
+      </PostContainer>
+    )
+  }
+
   return (
     <PostContainer>
       <PostHeader>
@@ -31,43 +90,36 @@ export function Post() {
             <span>VOLTAR</span>
           </NavLink>
 
-          <NavLink
-            href="https://github.com/amosrodrigues"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <NavLink href={postInfo.html_url} target="_blank" rel="noreferrer">
             <span>VER NO GITHUB</span>
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} fontSize={12} />
           </NavLink>
         </PostNav>
 
         <PostInfo>
-          <h2>JavaScript data types and data structures</h2>
+          <h2>{postInfo.title}</h2>
 
           <div>
             <PostInfoItem>
               <FontAwesomeIcon icon={faGithub} fontSize={18} />
-              <span>amosrodrigues</span>
+              <span>{postInfo.user.login}</span>
             </PostInfoItem>
 
             <PostInfoItem>
               <FontAwesomeIcon icon={faCalendarDay} fontSize={18} />
-              <span>Há 1 dia</span>
+              <span>{dateFormatter(postInfo.created_at)}</span>
             </PostInfoItem>
 
             <PostInfoItem>
               <FontAwesomeIcon icon={faComment} fontSize={18} />
-              <span>5 comentários</span>
+              <span>{postInfo.comments} comentários</span>
             </PostInfoItem>
           </div>
         </PostInfo>
       </PostHeader>
 
       <DescriptionMarkdown>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis quisquam
-        iure magnam fugit consequuntur ab odio rerum, dolores, delectus quia
-        eveniet debitis quas quod corrupti enim amet, obcaecati eos expedita?
-        <ReactMarkdown># Hello, *world*!</ReactMarkdown>
+        {/* <ReactMarkdown>{postInfo.body}</ReactMarkdown> */}
       </DescriptionMarkdown>
     </PostContainer>
   )

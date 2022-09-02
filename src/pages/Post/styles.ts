@@ -8,7 +8,7 @@ export const PostContainer = styled.div`
   align-items: flex-start;
 `
 
-export const PostHeader = styled.header`
+const PostHeaderBase = styled.header`
   width: 100%;
   /* height: 168px; */
 
@@ -24,6 +24,14 @@ export const PostHeader = styled.header`
 
   box-shadow: 0px 2px 28px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+`
+
+export const PostHeader = styled(PostHeaderBase)`
+  align-items: flex-start;
+`
+
+export const LoaderContainer = styled(PostHeaderBase)`
+  align-items: center;
 `
 
 export const PostNav = styled.nav`
@@ -83,6 +91,14 @@ export const PostInfoItem = styled.div`
 
   span {
     color: ${(props) => props.theme.span};
+  }
+
+  :nth-child(2) {
+    span {
+      ::first-letter {
+        text-transform: capitalize;
+      }
+    }
   }
 
   svg {

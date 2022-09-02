@@ -18,6 +18,7 @@ import { dateFormatter } from '../../utils/formatter'
 
 import {
   DescriptionMarkdown,
+  LoaderContainer,
   NavLink,
   PostContainer,
   PostHeader,
@@ -39,7 +40,17 @@ interface PostData {
 }
 
 export function Post() {
-  const [postInfo, setPostInfo] = useState<PostData>({} as PostData)
+  const [postInfo, setPostInfo] = useState<PostData>({
+    body: '',
+    created_at: String(new Date()),
+    number: 0,
+    title: '',
+    comments: 0,
+    html_url: '',
+    user: {
+      login: '',
+    },
+  })
   const [request, setRequest] = useState({ error: '', isLoading: false })
 
   const { issueNumber } = useParams()
@@ -47,13 +58,16 @@ export function Post() {
   const fetchPostGitHub = useCallback(async () => {
     try {
       setRequest((state) => ({ ...state, isLoading: true }))
+
       const url = `repos/amosrodrigues/challenge-github-blog/issues/${issueNumber}`
       const response = await api.get<PostData>(url)
 
       if (response.data) {
         setPostInfo(response.data)
       }
+      setRequest((state) => ({ ...state, isLoading: false }))
     } catch (error) {
+      setRequest((state) => ({ ...state, isLoading: false }))
       if (axios.isAxiosError(error)) {
         const { response } = error as AxiosError
         if (response) {
@@ -61,11 +75,8 @@ export function Post() {
             ...state,
             error: 'Ops! algo errado ao obter os dados do Github.',
           }))
-          return
         }
       }
-    } finally {
-      setRequest((state) => ({ ...state, isLoading: false }))
     }
   }, [issueNumber])
 
@@ -73,10 +84,12 @@ export function Post() {
     fetchPostGitHub()
   }, [fetchPostGitHub])
 
-  if (request.isLoading && !!postInfo.title) {
+  if (request.isLoading) {
     return (
       <PostContainer>
-        <Loader />
+        <LoaderContainer>
+          <Loader />
+        </LoaderContainer>
       </PostContainer>
     )
   }
@@ -119,7 +132,7 @@ export function Post() {
       </PostHeader>
 
       <DescriptionMarkdown>
-        {/* <ReactMarkdown>{postInfo.body}</ReactMarkdown> */}
+        <ReactMarkdown>{postInfo.body}</ReactMarkdown>
       </DescriptionMarkdown>
     </PostContainer>
   )

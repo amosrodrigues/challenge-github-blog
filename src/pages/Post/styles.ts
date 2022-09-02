@@ -10,7 +10,7 @@ export const PostContainer = styled.div`
 
 export const PostHeader = styled.header`
   width: 100%;
-  height: 168px;
+  /* height: 168px; */
 
   padding: 2rem;
   margin-top: -5.5rem;
@@ -31,10 +31,9 @@ export const PostNav = styled.nav`
   height: 100%;
   display: flex;
   justify-content: space-between;
-  position: relative;
 `
 
-export const BaseLink = styled.a`
+export const NavLink = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +41,6 @@ export const BaseLink = styled.a`
   color: ${(props) => props.theme.blue};
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  position: absolute;
 
   &:hover {
     border-bottom: 1px solid ${(props) => props.theme.blue};
@@ -55,16 +53,6 @@ export const BaseLink = styled.a`
   }
 `
 
-export const BackLink = styled(BaseLink)`
-  left: 0;
-  top: 0;
-`
-
-export const GitHubLink = styled(BaseLink)`
-  right: 0;
-  top: 0;
-`
-
 export const PostInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,7 +60,7 @@ export const PostInfo = styled.div`
 
   > h2 {
     display: -webkit-box;
-    -webkit-line-clamp: 1;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 

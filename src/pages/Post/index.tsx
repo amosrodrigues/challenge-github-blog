@@ -8,12 +8,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ReactMarkdown from 'react-markdown'
 import { Link } from 'react-router-dom'
 
 import {
-  BackLink,
   DescriptionMarkdown,
-  GitHubLink,
+  NavLink,
   PostContainer,
   PostHeader,
   PostInfo,
@@ -26,19 +26,19 @@ export function Post() {
     <PostContainer>
       <PostHeader>
         <PostNav>
-          <BackLink as={Link} to="/" title="Voltar para o Blog">
+          <NavLink as={Link} to="/" title="Voltar para o Blog">
             <FontAwesomeIcon icon={faChevronLeft} fontSize={12} />
             <span>VOLTAR</span>
-          </BackLink>
+          </NavLink>
 
-          <GitHubLink
+          <NavLink
             href="https://github.com/amosrodrigues"
             target="_blank"
             rel="noreferrer"
           >
             <span>VER NO GITHUB</span>
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} fontSize={12} />
-          </GitHubLink>
+          </NavLink>
         </PostNav>
 
         <PostInfo>
@@ -67,6 +67,7 @@ export function Post() {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis quisquam
         iure magnam fugit consequuntur ab odio rerum, dolores, delectus quia
         eveniet debitis quas quod corrupti enim amet, obcaecati eos expedita?
+        <ReactMarkdown># Hello, *world*!</ReactMarkdown>
       </DescriptionMarkdown>
     </PostContainer>
   )

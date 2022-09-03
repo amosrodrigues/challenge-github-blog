@@ -9,8 +9,13 @@ export type Post = {
   title: string
 }
 
+interface Posts {
+  items: Post[]
+  total_count: number
+}
+
 export type PostContextData = {
-  posts: Post[]
+  posts: Posts
   request: { error: string; isLoading: boolean }
   fetchPostGitHub: (search: string) => Promise<void>
 }
@@ -21,21 +26,21 @@ interface PostProviderProps {
 export const PostContext = createContext({} as PostContextData)
 
 export function PostProvider({ children }: PostProviderProps) {
-  const [posts, setPosts] = useState([] as Post[])
+  const [posts, setPosts] = useState<Posts>({} as Posts)
   const [request, setRequest] = useState({ error: '', isLoading: false })
 
   async function fetchPostGitHub(search?: string) {
     try {
       setRequest((state) => ({ ...state, isLoading: true }))
       const queryString = encodeURIComponent(search ?? '')
-      const response = await api.get<{ items: Post[] }>('search/issues', {
+      const response = await api.get<Posts>('search/issues', {
         params: {
           q: `repo:amosrodrigues/challenge-github-blog is:issue ${queryString} `,
         },
       })
 
       if (response.data) {
-        setPosts(response.data.items)
+        setPosts(response.data)
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -30,13 +30,11 @@ const searchFormSchema = z.object({
 type SearchFormInputs = z.infer<typeof searchFormSchema>
 
 export function Blog() {
-  const { register, watch, handleSubmit } = useForm<SearchFormInputs>({
+  const { register, handleSubmit } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchFormSchema),
   })
 
   const { posts, request, fetchPostGitHub } = usePost()
-
-  const query = watch('query')
 
   const getPost: SubmitHandler<SearchFormInputs> = async (
     data: SearchFormInputs,
@@ -52,13 +50,13 @@ export function Blog() {
 
       <PostInfo>
         <h3>Publicações</h3>
-        <span>6 publicações</span>
+        <span>{posts.total_count} publicações</span>
       </PostInfo>
 
       <SearchFormContainer>
         <input
           type="text"
-          placeholder="Buscar conteúdos (enter)"
+          placeholder="Buscar conteúdos - tecla ENTER para continuar"
           {...register('query')}
         />
       </SearchFormContainer>
@@ -68,8 +66,8 @@ export function Blog() {
           <PostCardNotFound>
             <Loader />
           </PostCardNotFound>
-        ) : posts.length > 0 ? (
-          posts?.map((post) => {
+        ) : posts.items && posts.items.length > 0 ? (
+          posts.items.map((post) => {
             return (
               <PostCard
                 as={Link}

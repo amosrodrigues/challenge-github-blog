@@ -1,7 +1,7 @@
 import { useContext } from 'react'
-import { PostContext } from '../contexts/Post'
+import { PostContext, PostContextData } from '../contexts/Post'
 
-export function usePost() {
+export function usePost(): PostContextData {
   const context = useContext(PostContext)
 
   return context

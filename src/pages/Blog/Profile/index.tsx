@@ -18,63 +18,18 @@ import {
   ProfileInfo,
   ProfileInfoItem,
 } from './styles'
-import { memo, useEffect, useState } from 'react'
-import { api } from '../../../services/api'
-import axios, { AxiosError } from 'axios'
+import { memo } from 'react'
 import { Loader } from '../../../components/Loader'
-
-interface ProfileGitHub {
-  name: string
-  login: string
-  avatar_url: string
-  html_url: string
-  followers: number
-  company: string
-  bio: string
-  location: string
-}
+import { useProfile } from '../../../hooks/useProfile'
 
 function ProfileBase() {
-  const [profile, setProfile] = useState<ProfileGitHub>({} as ProfileGitHub)
-  const [request, setRequest] = useState({ error: '', isLoading: false })
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        setRequest((state) => ({ ...state, isLoading: true }))
-        const response = await api.get<ProfileGitHub>('users/amosrodrigues')
-
-        if (response.data) {
-          setProfile(response.data)
-        }
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          const { response } = error as AxiosError
-          if (response) {
-            setRequest((state) => ({
-              ...state,
-              error: 'Ops! algo errado ao obter os dados do Github.',
-            }))
-            return
-          }
-        }
-      } finally {
-        setRequest((state) => ({ ...state, isLoading: false }))
-      }
-    })()
-  }, [])
-
-  if (request.isLoading) {
-    return (
-      <ProfileContainer>
-        <Loader />
-      </ProfileContainer>
-    )
-  }
+  const { profile, request } = useProfile()
 
   return (
     <ProfileContainer>
-      {profile.name ? (
+      {request.isLoading ? (
+        <Loader />
+      ) : profile.login ? (
         <>
           <ProfileAvatar src={profile.avatar_url} alt={profile.name} />
 

@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
+import { createContext } from 'use-context-selector'
 import { api } from '../services/api'
 
 export type Post = {

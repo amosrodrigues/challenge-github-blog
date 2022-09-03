@@ -43,17 +43,18 @@ export function Blog() {
 
   const debouncedSearch = useDebounce(valueSearch, 1000)
 
-  useEffect(() => {
-    if (debouncedSearch) {
-      ;(async () => {
-        await fetchPostGitHub(debouncedSearch)
-      })()
-    } else {
-      ;(async () => {
-        await fetchPostGitHub('')
-      })()
+  const getPosts = useCallback(async () => {
+    if (debouncedSearch && debouncedSearch.length > 0) {
+      await fetchPostGitHub(debouncedSearch)
+    }
+    if (!debouncedSearch.length) {
+      await fetchPostGitHub('')
     }
   }, [debouncedSearch, fetchPostGitHub])
+
+  useEffect(() => {
+    getPosts()
+  }, [getPosts])
 
   return (
     <BlogContainer onSubmit={handleSubmit((data, e) => e?.preventDefault())}>

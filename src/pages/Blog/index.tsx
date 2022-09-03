@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { Profile } from './Profile'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { usePost } from '../../hooks/usePost'
 
@@ -30,26 +30,24 @@ const searchFormSchema = z.object({
 type SearchFormInputs = z.infer<typeof searchFormSchema>
 
 export function Blog() {
-  const { register, watch } = useForm<SearchFormInputs>({
+  const { register, watch, handleSubmit } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchFormSchema),
   })
 
   const { posts, request, fetchPostGitHub } = usePost()
 
-  // const query = watch('query')
+  const query = watch('query')
 
-  // const getPost = useCallback(async () => {
-  //   await fetchPostGitHub('amosrodrigues')
-  // }, [query])
-
-  // console.log(query)
-
-  // useEffect(() => {
-  //   getPost()
-  // }, [getPost])
+  const getPost: SubmitHandler<SearchFormInputs> = async (
+    data: SearchFormInputs,
+    event,
+  ) => {
+    event?.preventDefault()
+    await fetchPostGitHub(data.query)
+  }
 
   return (
-    <BlogContainer>
+    <BlogContainer onSubmit={handleSubmit(getPost)}>
       <Profile />
 
       <PostInfo>
@@ -60,16 +58,16 @@ export function Blog() {
       <SearchFormContainer>
         <input
           type="text"
-          placeholder="Buscar conteúdos"
+          placeholder="Buscar conteúdos (enter)"
           {...register('query')}
         />
       </SearchFormContainer>
 
       <PostListContainer>
         {request.isLoading ? (
-          <PostCard>
+          <PostCardNotFound>
             <Loader />
-          </PostCard>
+          </PostCardNotFound>
         ) : posts.length > 0 ? (
           posts?.map((post) => {
             return (

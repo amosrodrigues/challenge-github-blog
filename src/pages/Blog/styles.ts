@@ -60,12 +60,12 @@ export const PostListContainer = styled.main`
   gap: 2rem;
 `
 
-const PostCardBAse = styled.div`
+const PostCardBase = styled.div`
   text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   gap: 1.25rem;
 
   width: 416px;
@@ -77,7 +77,7 @@ const PostCardBAse = styled.div`
   border: 2px solid transparent;
 `
 
-export const PostCard = styled(PostCardBAse)`
+export const PostCard = styled(PostCardBase)`
   cursor: pointer;
 
   &:hover {
@@ -86,7 +86,7 @@ export const PostCard = styled(PostCardBAse)`
   }
 `
 
-export const PostCardNotFound = styled(PostCardBAse)`
+export const PostCardNotFound = styled(PostCardBase)`
   display: flex;
   flex-direction: column;
   align-items: center;

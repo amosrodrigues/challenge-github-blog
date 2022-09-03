@@ -32,6 +32,15 @@ export const PostHeader = styled(PostHeaderBase)`
 
 export const LoaderContainer = styled(PostHeaderBase)`
   align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+
+  > a {
+    position: absolute;
+    left: 2rem;
+    top: 2rem;
+  }
 `
 
 export const PostNav = styled.nav`

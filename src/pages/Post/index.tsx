@@ -5,6 +5,7 @@ import {
   faCalendarDay,
   faChevronLeft,
   faComment,
+  faMagnifyingGlassChart,
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -96,44 +97,68 @@ export function Post() {
 
   return (
     <PostContainer>
-      <PostHeader>
-        <PostNav>
+      {request.isLoading ? (
+        <LoaderContainer>
+          <Loader />
+        </LoaderContainer>
+      ) : postInfo.title ? (
+        <>
+          <PostHeader>
+            <PostNav>
+              <NavLink as={Link} to="/" title="Voltar para o Blog">
+                <FontAwesomeIcon icon={faChevronLeft} fontSize={12} />
+                <span>VOLTAR</span>
+              </NavLink>
+
+              <NavLink
+                href={postInfo.html_url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span>VER NO GITHUB</span>
+                <FontAwesomeIcon
+                  icon={faArrowUpRightFromSquare}
+                  fontSize={12}
+                />
+              </NavLink>
+            </PostNav>
+
+            <PostInfo>
+              <h2>{postInfo.title}</h2>
+
+              <div>
+                <PostInfoItem>
+                  <FontAwesomeIcon icon={faGithub} fontSize={18} />
+                  <span>{postInfo.user.login}</span>
+                </PostInfoItem>
+
+                <PostInfoItem>
+                  <FontAwesomeIcon icon={faCalendarDay} fontSize={18} />
+                  <span>{dateFormatter(postInfo.created_at)}</span>
+                </PostInfoItem>
+
+                <PostInfoItem>
+                  <FontAwesomeIcon icon={faComment} fontSize={18} />
+                  <span>{postInfo.comments} comentários</span>
+                </PostInfoItem>
+              </div>
+            </PostInfo>
+          </PostHeader>
+
+          <DescriptionMarkdown>
+            <ReactMarkdown>{postInfo.body}</ReactMarkdown>
+          </DescriptionMarkdown>
+        </>
+      ) : (
+        <LoaderContainer>
           <NavLink as={Link} to="/" title="Voltar para o Blog">
             <FontAwesomeIcon icon={faChevronLeft} fontSize={12} />
             <span>VOLTAR</span>
           </NavLink>
-
-          <NavLink href={postInfo.html_url} target="_blank" rel="noreferrer">
-            <span>VER NO GITHUB</span>
-            <FontAwesomeIcon icon={faArrowUpRightFromSquare} fontSize={12} />
-          </NavLink>
-        </PostNav>
-
-        <PostInfo>
-          <h2>{postInfo.title}</h2>
-
-          <div>
-            <PostInfoItem>
-              <FontAwesomeIcon icon={faGithub} fontSize={18} />
-              <span>{postInfo.user.login}</span>
-            </PostInfoItem>
-
-            <PostInfoItem>
-              <FontAwesomeIcon icon={faCalendarDay} fontSize={18} />
-              <span>{dateFormatter(postInfo.created_at)}</span>
-            </PostInfoItem>
-
-            <PostInfoItem>
-              <FontAwesomeIcon icon={faComment} fontSize={18} />
-              <span>{postInfo.comments} comentários</span>
-            </PostInfoItem>
-          </div>
-        </PostInfo>
-      </PostHeader>
-
-      <DescriptionMarkdown>
-        <ReactMarkdown>{postInfo.body}</ReactMarkdown>
-      </DescriptionMarkdown>
+          <FontAwesomeIcon icon={faMagnifyingGlassChart} fontSize={48} />
+          <p>Ops! Post não localizado...</p>
+        </LoaderContainer>
+      )}
     </PostContainer>
   )
 }

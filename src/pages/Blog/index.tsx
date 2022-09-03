@@ -39,7 +39,7 @@ export function Blog() {
 
   const search = watch('query')
 
-  const valueSearch = search.trim().replace(' ', '-')
+  const valueSearch = search && search.trim().replace(' ', '-')
 
   const debouncedSearch = useDebounce(valueSearch, 1000)
 

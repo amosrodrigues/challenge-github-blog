@@ -37,9 +37,11 @@ export function Blog() {
 
   const { posts, request, fetchPostGitHub } = usePost()
 
-  const valueSearch = watch('query')
+  const search = watch('query')
 
-  const debouncedSearch = useDebounce(valueSearch, 500)
+  const valueSearch = search.trim().replace(' ', '-')
+
+  const debouncedSearch = useDebounce(valueSearch, 1000)
 
   useEffect(() => {
     if (debouncedSearch) {

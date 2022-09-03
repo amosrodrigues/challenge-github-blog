@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { createContext } from 'use-context-selector'
 import { api } from '../services/api'
 
@@ -30,7 +30,7 @@ export function PostProvider({ children }: PostProviderProps) {
   const [posts, setPosts] = useState<Posts>({} as Posts)
   const [request, setRequest] = useState({ error: '', isLoading: false })
 
-  async function fetchPostGitHub(search?: string) {
+  const fetchPostGitHub = useCallback(async (search?: string) => {
     try {
       setRequest((state) => ({ ...state, isLoading: true }))
       const queryString = encodeURIComponent(search ?? '')
@@ -57,11 +57,11 @@ export function PostProvider({ children }: PostProviderProps) {
     } finally {
       setRequest((state) => ({ ...state, isLoading: false }))
     }
-  }
+  }, [])
 
   useEffect(() => {
     fetchPostGitHub()
-  }, [])
+  }, [fetchPostGitHub])
 
   return (
     <PostContext.Provider value={{ posts, request, fetchPostGitHub }}>

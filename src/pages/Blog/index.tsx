@@ -22,6 +22,7 @@ import {
   PostListContainer,
   SearchFormContainer,
 } from './styles'
+import { useDebounce } from '../../hooks/useDebounce'
 
 const searchFormSchema = z.object({
   query: z.string(),
@@ -30,22 +31,30 @@ const searchFormSchema = z.object({
 type SearchFormInputs = z.infer<typeof searchFormSchema>
 
 export function Blog() {
-  const { register, handleSubmit } = useForm<SearchFormInputs>({
+  const { register, handleSubmit, watch } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchFormSchema),
   })
 
   const { posts, request, fetchPostGitHub } = usePost()
 
-  const getPost: SubmitHandler<SearchFormInputs> = async (
-    data: SearchFormInputs,
-    event,
-  ) => {
-    event?.preventDefault()
-    await fetchPostGitHub(data.query)
-  }
+  const valueSearch = watch('query')
+
+  const debouncedSearch = useDebounce(valueSearch, 500)
+
+  useEffect(() => {
+    if (debouncedSearch) {
+      ;(async () => {
+        await fetchPostGitHub(debouncedSearch)
+      })()
+    } else {
+      ;(async () => {
+        await fetchPostGitHub('')
+      })()
+    }
+  }, [debouncedSearch, fetchPostGitHub])
 
   return (
-    <BlogContainer onSubmit={handleSubmit(getPost)}>
+    <BlogContainer onSubmit={handleSubmit((data, e) => e?.preventDefault())}>
       <Profile />
 
       <PostInfo>
@@ -56,7 +65,7 @@ export function Blog() {
       <SearchFormContainer>
         <input
           type="text"
-          placeholder="Buscar conteúdos - tecla ENTER para continuar"
+          placeholder="Buscar conteúdos"
           {...register('query')}
         />
       </SearchFormContainer>

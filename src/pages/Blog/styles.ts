@@ -9,6 +9,10 @@ export const BlogContainer = styled.div`
   align-items: center;
 
   margin-bottom: 4.5rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `
 
 export const PostInfo = styled.section`
@@ -58,6 +62,10 @@ export const PostListContainer = styled.main`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `
 
 const PostCardBase = styled.div`
@@ -75,6 +83,10 @@ const PostCardBase = styled.div`
   background: ${(props) => props.theme.post};
   border-radius: 10px;
   border: 2px solid transparent;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 export const PostCard = styled(PostCardBase)`

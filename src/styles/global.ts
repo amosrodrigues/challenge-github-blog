@@ -16,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
     background: ${(props) => props.theme.background};
     color: ${(props) => props.theme.text};
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
   }
 
   body, input, textarea, button {

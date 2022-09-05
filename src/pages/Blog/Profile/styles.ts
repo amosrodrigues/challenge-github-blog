@@ -17,6 +17,12 @@ export const ProfileContainer = styled.section`
 
   box-shadow: 0px 2px 28px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+  }
 `
 
 export const ProfileAvatar = styled.img`
@@ -31,10 +37,15 @@ export const ProfileContent = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   padding: 0.5rem 0;
 
-  justify-content: space-between;
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+    width: 100%;
+    padding-top: 1.5rem;
+  }
 `
 
 export const ProfileBio = styled.div`
@@ -49,6 +60,11 @@ export const ProfileInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 
 export const ProfileInfoItem = styled.div`

@@ -6,6 +6,10 @@ export const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `
 
 const PostHeaderBase = styled.header`
@@ -90,6 +94,14 @@ export const PostInfo = styled.div`
   > div {
     display: flex;
     gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+
+    > div {
+      flex-direction: column;
+    }
   }
 `
 
